@@ -5,6 +5,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
+// ignore: depend_on_referenced_packages
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -160,6 +162,7 @@ class MainMenuScreen extends StatefulWidget {
 class _MainMenuScreenState extends State<MainMenuScreen> {
   int highScore = 0;
   int bestLevel = 1;
+  List<int> topScores = [];
   CannonSkin selectedSkin = CannonSkin.cyan;
 
   @override
@@ -174,7 +177,65 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     setState(() {
       highScore = prefs.getInt('high_score') ?? 0;
       bestLevel = prefs.getInt('best_level') ?? 1;
+      topScores = (prefs.getStringList('top_scores') ?? [])
+          .map((s) => int.tryParse(s) ?? 0)
+          .toList();
     });
+  }
+
+  void _showTopScoresDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF2A085C),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(color: Colors.amberAccent, width: 2),
+        ),
+        title: const Text('🏆 Meilleurs scores',
+            style: TextStyle(
+                color: Colors.amberAccent,
+                fontSize: 24,
+                fontWeight: FontWeight.bold)),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: topScores.isEmpty
+              ? const Text(
+                  'Aucun score enregistré pour le moment.\nJouez pour apparaître ici !',
+                  style: TextStyle(color: Colors.white70),
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(topScores.length, (i) {
+                    final medals = ['🥇', '🥈', '🥉', '🏅', '🏅'];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        children: [
+                          Text(medals[i.clamp(0, medals.length - 1)],
+                              style: const TextStyle(fontSize: 20)),
+                          const SizedBox(width: 12),
+                          Text('${topScores[i]} points',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('FERMER',
+                style: TextStyle(
+                    color: Colors.amberAccent, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showAboutDialog() {
@@ -362,6 +423,11 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 child: Row(
                   children: [
                     IconButton(
+                      icon: const Icon(Icons.leaderboard,
+                          color: Colors.amberAccent, size: 26),
+                      onPressed: _showTopScoresDialog,
+                    ),
+                    IconButton(
                       icon: Icon(
                           SoundManager.muted
                               ? Icons.volume_off
@@ -528,6 +594,26 @@ class _GameScreenState extends State<GameScreen>
     }
   }
 
+  Future<void> _saveTopScore() async {
+    if (score <= 0) return;
+    final prefs = await SharedPreferences.getInstance();
+    List<int> scores = (prefs.getStringList('top_scores') ?? [])
+        .map((s) => int.tryParse(s) ?? 0)
+        .toList();
+    scores.add(score);
+    scores.sort((a, b) => b.compareTo(a));
+    if (scores.length > 5) scores = scores.sublist(0, 5);
+    await prefs.setStringList(
+        'top_scores', scores.map((s) => s.toString()).toList());
+  }
+
+  void _shareScore() {
+    Share.share(
+      '🎮 J\'ai fait $score points au niveau $level sur Para Tir : Sky Defense Kids ! 🚀 Peux-tu faire mieux ?',
+      subject: 'Mon score sur Para Tir',
+    );
+  }
+
   void levelUp() {
     if (showLevelUp || gameOver) return;
 
@@ -631,6 +717,7 @@ class _GameScreenState extends State<GameScreen>
             showLevelUp = false;
             _ticker.stop();
             _checkHighScore();
+            _saveTopScore();
           }
         }
       }
@@ -881,9 +968,7 @@ class _GameScreenState extends State<GameScreen>
                                   minWidth: 34, minHeight: 34),
                               iconSize: 20,
                               icon: Icon(
-                                  isPaused
-                                      ? Icons.play_arrow
-                                      : Icons.pause,
+                                  isPaused ? Icons.play_arrow : Icons.pause,
                                   color: Colors.white),
                               onPressed: togglePause,
                             ),
@@ -1019,8 +1104,8 @@ class _GameScreenState extends State<GameScreen>
                           decoration: BoxDecoration(
                             color: const Color(0xFF3B1578),
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                                color: Colors.amberAccent, width: 3),
+                            border:
+                                Border.all(color: Colors.amberAccent, width: 3),
                             boxShadow: const [
                               BoxShadow(
                                   color: Colors.purpleAccent, blurRadius: 15)
@@ -1065,8 +1150,7 @@ class _GameScreenState extends State<GameScreen>
                                       horizontal: 35,
                                       vertical: isLandscape ? 10 : 12),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20)),
+                                      borderRadius: BorderRadius.circular(20)),
                                 ),
                                 child: Text('C\'EST PARTI !',
                                     style: TextStyle(
@@ -1113,19 +1197,28 @@ class _GameScreenState extends State<GameScreen>
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                const SizedBox(width: 15),
+                                const SizedBox(width: 12),
                                 OutlinedButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                        color: Colors.white70),
+                                    side:
+                                        const BorderSide(color: Colors.white70),
                                   ),
                                   child: const Text('MENU',
                                       style: TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 18)),
+                                          color: Colors.white70, fontSize: 18)),
                                 ),
                               ],
+                            ),
+                            const SizedBox(height: 14),
+                            TextButton.icon(
+                              onPressed: _shareScore,
+                              icon: const Icon(Icons.share,
+                                  color: Colors.cyanAccent),
+                              label: const Text('PARTAGER MON SCORE',
+                                  style: TextStyle(
+                                      color: Colors.cyanAccent,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
