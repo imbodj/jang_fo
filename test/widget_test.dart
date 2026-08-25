@@ -7,13 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jang_fo/main.dart';
 
-import 'package:para_tir/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const ParaTirApp());
+    await tester.pumpWidget(const GameHubApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

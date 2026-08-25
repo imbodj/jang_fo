@@ -1,4 +1,4 @@
-package com.example.para_tir
+package com.sencoursdemaths.paratir
 
 import io.flutter.embedding.android.FlutterActivity
 

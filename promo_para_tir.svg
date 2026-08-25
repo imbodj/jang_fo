@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F2027"/><stop offset="50%" stop-color="#203A43"/><stop offset="100%" stop-color="#2C5364"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/><stop offset="100%" stop-color="#D07200"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8D5524"/><stop offset="100%" stop-color="#5C3317"/>
+    </linearGradient>
+    <linearGradient id="btnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00C6FF"/><stop offset="100%" stop-color="#0072FF"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  
+  <text x="540" y="180" font-family="sans-serif" font-weight="900" font-size="70" fill="url(#gold)" text-anchor="middle">PARA TIR</text>
+  <text x="540" y="240" font-family="sans-serif" font-weight="bold" font-size="36" fill="#FFFFFF" text-anchor="middle">Développe ton agilité et ta précision !</text>
+
+  <g transform="translate(540, 500)">
+    <path d="M-200,-50 C-200,-150 0,-150 0,-50 Z" fill="#FF512F"/>
+    <line x1="-200" y1="-50" x2="-100" y2="50" stroke="#FFF" stroke-width="4"/>
+    <line x1="0" y1="-50" x2="-100" y2="50" stroke="#FFF" stroke-width="4"/>
+    <rect x="-130" y="50" width="60" height="60" rx="10" fill="url(#gold)"/>
+    
+    <circle cx="-100" cy="50" r="70" fill="none" stroke="#00C6FF" stroke-width="6" stroke-dasharray="10 10"/>
+    <circle cx="-100" cy="50" r="10" fill="#00C6FF"/>
+  </g>
+
+  <g transform="translate(540, 1400)">
+    <path d="M-250,400 C-250,180 -150,130 0,130 C150,130 250,180 250,400 Z" fill="url(#btnGrad)"/>
+    <ellipse cx="0" cy="-60" rx="140" ry="160" fill="url(#skin)"/>
+    <path d="M-40,-210 C-70,-280 -20,-330 0,-330 C20,-330 70,-280 40,-210 Z" fill="#111"/>
+    <circle cx="0" cy="-270" r="16" fill="url(#gold)"/>
+    <rect x="-110" y="-180" width="220" height="40" rx="20" fill="#333"/>
+    <circle cx="-50" cy="-160" r="25" fill="#00C6FF"/>
+    <circle cx="50" cy="-160" r="25" fill="#00C6FF"/>
+    <ellipse cx="-50" cy="-70" rx="18" ry="22" fill="#FFF"/>
+    <ellipse cx="50" cy="-70" rx="18" ry="22" fill="#FFF"/>
+    <circle cx="-45" cy="-65" r="10" fill="#1A0B2E"/>
+    <circle cx="55" cy="-65" r="10" fill="#1A0B2E"/>
+    <path d="M-40,10 Q0,40 40,10" stroke="#FFF" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

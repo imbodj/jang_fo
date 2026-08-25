@@ -1,7 +1,7 @@
-name: para_tir
-description: "Para Tir - Sky Defense Kids Game"
+name: jang_fo
+description: "Jàng&Fo - Jeux Éducatifs Kids"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.1.0+5
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -12,6 +12,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.2
   audioplayers: ^6.1.0
+  flutter_animate: ^4.5.0
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  share_plus: ^10.1.4
 
 dev_dependencies:
   flutter_test:
@@ -19,24 +23,27 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.2
   flutter_native_splash: ^2.4.0
-  share_plus: ^10.1.4
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logo.png
-    - assets/images/icon.png
+    - assets/images/icon_512.png
+    - assets/images/promo_para_tir.png
+    - assets/images/promo_bon_compte.png
+    - assets/images/promo_le_bon_mot.png
+    - assets/images/promo_mots_mysteres.png
     - assets/audio/
+    - assets/data/dictionnaire.db
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: assets/images/icon.png
-  adaptive_icon_background: "#4A00E0"
-  adaptive_icon_foreground: assets/images/logo.png
+  image_path: assets/images/icon_512.png
+  adaptive_icon_background: "#1A0B2E"
+  adaptive_icon_foreground: assets/images/icon_512.png
 
 flutter_native_splash:
-  color: "#2A085C"
-  image: assets/images/logo.png
+  color: "#1A0B2E"
+  image: assets/images/icon_512.png
   android: true
   ios: true
